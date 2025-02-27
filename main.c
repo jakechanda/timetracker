@@ -4,19 +4,33 @@
 #include <string.h>
 
 int main(int argc, char *argv[]) {
-    // Check if the user provided a command.
+    // Initialize tracker (sets base directory and loads current project)
+    init_tracker();
+
     if (argc < 2) {
-        printf("Usage: %s <command> [task_name]\n", argv[0]);
+        printf("Usage: %s <command> [arguments]\n", argv[0]);
         printf("Commands:\n");
-        printf("  start <task_name>   Start a new task.\n");
-        printf("  stop                Stop the current task.\n");
-        printf("  report              Generate a time report.\n");
+        printf("  create <project_name>    Create a new project.\n");
+        printf("  switch <project_name>    Switch to an existing project.\n");
+        printf("  start <task_name>        Start a new task.\n");
+        printf("  stop                     Stop the current task.\n");
+        printf("  report                   Generate a time report.\n");
         return EXIT_FAILURE;
     }
 
-    // Determine which command was provided.
-    if (strcmp(argv[1], "start") == 0) {
-        // The start command requires a task name.
+    if (strcmp(argv[1], "create") == 0) {
+        if (argc < 3) {
+            printf("Error: Missing project name for create command.\n");
+            return EXIT_FAILURE;
+        }
+        create_project(argv[2]);
+    } else if (strcmp(argv[1], "switch") == 0) {
+        if (argc < 3) {
+            printf("Error: Missing project name for switch command.\n");
+            return EXIT_FAILURE;
+        }
+        switch_project(argv[2]);
+    } else if (strcmp(argv[1], "start") == 0) {
         if (argc < 3) {
             printf("Error: Missing task name for start command.\n");
             return EXIT_FAILURE;
@@ -33,3 +47,4 @@ int main(int argc, char *argv[]) {
 
     return EXIT_SUCCESS;
 }
+
